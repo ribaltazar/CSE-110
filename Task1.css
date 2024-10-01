@@ -65,24 +65,32 @@ p{
     background-color: #182b49;
     color: white;
     max-height: 500px;
+    font-size: 28px;
+    overflow-y: auto;
 }
 
 .gridstyle2{
     background-color: #182b49;
     color: white;
     max-height: 500px;
+    font-size: 28px;
+    overflow-y: auto;
 }
 
 .gridstyle3{
     background-color: #182b49;
     color: white;
     max-height: 500px;
+    font-size: 28px;
+    overflow-y: auto;
 }
 
 .gridstyle4{
     background-color: #182b49;
     color: white;
     max-height: 500px;
+    font-size: 28px;
+    overflow-y: auto;
 }
 
 @media screen and (max-width: 800px){
