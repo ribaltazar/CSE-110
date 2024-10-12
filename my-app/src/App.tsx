@@ -3,7 +3,7 @@ import './App.css';
 import { Label, Note } from "./types"; // Import the Label type from the appropriate module
 import { dummyNotesList } from "./constants"; // Import the dummyNotesList from the appropriate module
 import { ThemeContext, themes } from "./themeContext";
-import { ClickCounter } from './hooksExercise';
+import ToggleTheme, { ClickCounter } from './hooksExercise';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons"; 
@@ -68,9 +68,16 @@ function App() {
     setSelectedNote(initialNote);
   };
 
+  const [theme, setTheme] = useState(themes.light);
+
+  const toggleTheme  = () => {
+    setTheme(theme === themes.light ? themes.dark : themes.light);
+  }
+
   return ( 
-    <div className='app-container'>
-  	<form className="note-form" onSubmit={createNoteHandler}>
+    <ThemeContext.Provider value={theme}>
+      <div className='app-container' style={{ backgroundColor: theme.background, color: theme.foreground }}>
+  	<form className="note-form" onSubmit={createNoteHandler} >
     	<div>
       	<input
         	placeholder="Note Title"
@@ -78,6 +85,7 @@ function App() {
         	onChange={(event) =>
           	setCreateNote({ ...createNote, title: event.target.value })}
         	required>
+            
       	</input>
     	</div>
 
@@ -111,20 +119,28 @@ function App() {
     	{notes.map((note) => (
          <div
            key={note.id}
-           className="note-item">
+           className="note-item"
+           style={{ 
+            backgroundColor: theme.background, 
+            color: theme.foreground, 
+            border: `1px solid ${theme.foreground}` 
+          }}>
             {selectedNote.id === note.id ? (
             <div>
               <input
                 value={selectedNote.title}
                 onChange={(event) => updateSelectedNote(event, 'title')}
+                style={{ backgroundColor: theme.background, color: theme.foreground }}
               />
               <textarea
                 value={selectedNote.content}
                 onChange={(event) => updateSelectedNote(event, 'content')}
+                style={{ backgroundColor: theme.background, color: theme.foreground }}
               />
               <select
                 value={selectedNote.label}
                 onChange={(event) => updateSelectedNote(event, 'label')}
+                style={{ backgroundColor: theme.background, color: theme.foreground }}
               >
                 <option value={Label.personal}>Personal</option>
                 <option value={Label.study}>Study</option>
@@ -160,6 +176,8 @@ function App() {
         </ul>
     </div>
   </div>
+  <button onClick={toggleTheme}>Toggle Theme</button>
+  </ThemeContext.Provider>
   );
 }
 
