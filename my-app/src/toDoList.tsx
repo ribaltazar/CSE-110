@@ -3,9 +3,13 @@ import "./App.css";
 import { useState } from "react";
 import { GroceryItem } from "./types";
 import { dummyGroceryList } from "./constants";
+import { useParams } from "react-router-dom";
 
 export function ToDoList() {
- const [numRemainingItems, setNumRemainingItems] = useState(0);
+ 
+const { name } = useParams();
+
+const [numRemainingItems, setNumRemainingItems] = useState(0);
 
  let [items, setItems] = useState(dummyGroceryList);
 
@@ -32,6 +36,7 @@ export function ToDoList() {
  return (
    <div className="App">
      <div className="App-body">
+      <h1>{name}'s To Do List</h1>
        Items bought: {numRemainingItems}
        <form action=".">
          {items.map((item) => ListItem(item, handleCheckboxClick))}
@@ -42,15 +47,19 @@ export function ToDoList() {
 }
 
 function ListItem(item: GroceryItem, changeHandler: ChangeEventHandler) {
- return (
-   <div>
-     <input
-       type="checkbox"
-       onChange={changeHandler}
-       checked={item.isPurchased}
-       name={item.name}
-     />
-     {item.name}
-   </div>
- );
+  return (
+    <div>
+      <label htmlFor={item.name}>
+        <input
+          id={item.name} // Add id attribute to match with the label
+          type="checkbox"
+          onChange={changeHandler}
+          checked={item.isPurchased}
+          name={item.name}
+        />
+        {item.name}
+      </label>
+    </div>
+  );
 }
+

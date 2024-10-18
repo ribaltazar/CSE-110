@@ -7,7 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons"; 
 
-export const StickyNotes = () => {
+interface StickyNotesProps {
+  initialNotes?: Note[]; // Add this to accept the initialNotes prop
+}
+
+export const StickyNotes: React.FC<StickyNotesProps> = ({ initialNotes = dummyNotesList }) => {
 const initialNote = {
     id: -1,
     title: '',
@@ -84,7 +88,6 @@ const initialNote = {
         	onChange={(event) =>
           	setCreateNote({ ...createNote, title: event.target.value })}
         	required>
-            
       	</input>
     	</div>
 
@@ -119,6 +122,7 @@ const initialNote = {
          <div
            key={note.id}
            className="note-item"
+           data-testid={`note-item-${note.id}`}
            style={{ 
             backgroundColor: theme.background, 
             color: theme.foreground, 
@@ -152,17 +156,19 @@ const initialNote = {
           ) : (
           <div>
            <div className="notes-header">
-            <button onClick={() => heart(note)}>
+            <button onClick={() => heart(note)}
+              data-testid={`heart-button-${note.id}`}>
                         <FontAwesomeIcon 
                         icon={isFavorite(note) ? fasHeart: farHeart}
                         style={{ color: isFavorite(note) ? 'red' : 'black' }}
                         ></FontAwesomeIcon></button>
-             <button onClick={() => deleteNoteHandler(note.id)}>x</button>
+             <button onClick={() => deleteNoteHandler(note.id)} data-testid={`delete-button-${note.id}`}>x</button>
            </div>
            <h2> {note.title} </h2>
            <p> {note.content} </p>
            <p> {note.label} </p>
-           <button onClick={() => selectNoteForEditing(note)}>Edit</button>
+           <button onClick={() => selectNoteForEditing(note)}
+            data-testid={`edit-button-${note.id}`}>Edit</button>
             </div>
           )}
         </div>
