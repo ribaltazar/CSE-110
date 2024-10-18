@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { StickyNotes } from "./stickyNotes";
 
 jest.mock('./constants', () => ({
-  dummyNotesList: [], // Mock an empty list for testing
+  dummyNotesList: [], //mock an empty list for testing
 }));
 
 describe("Create StickyNote", () => {
@@ -16,7 +16,7 @@ describe("Create StickyNote", () => {
  test("creates a new note", () => {
    render(<StickyNotes />);
 
-// Please make sure your sticky note has a title and content input field with the following placeholders.
+// Please make sure your sticky note has a title and content input field with the following placeholders
    const createNoteTitleInput = screen.getByPlaceholderText("Note Title");
    const createNoteContentTextarea =
      screen.getByPlaceholderText("Note Content");
@@ -46,14 +46,15 @@ describe("Create StickyNote", () => {
   fireEvent.change(createNoteContentTextarea, { target: { value: "Test Content 1" } });
   fireEvent.click(createNoteButton);
 
-  const noteItem = screen.getByTestId("note-item-1"); // Ensure it matches created note's ID
+  const noteItem = screen.getByTestId("note-item-1");
   expect(noteItem).toBeInTheDocument();
 });
 
+//checks if notes are updated correctly
 test("updates a note", () => {
   render(<StickyNotes initialNotes={[]} />);
 
-  // Create a new note
+  //create a new note
   const createNoteTitleInput = screen.getByPlaceholderText("Note Title");
   const createNoteContentTextarea = screen.getByPlaceholderText("Note Content");
   const createNoteButton = screen.getByText("Create Note");
@@ -62,27 +63,28 @@ test("updates a note", () => {
   fireEvent.change(createNoteContentTextarea, { target: { value: "Test Content" } });
   fireEvent.click(createNoteButton);
 
-  // Now find the Edit button for the newly created note
+  //find the edit button for the newly created note
   const editButton = screen.getByTestId("edit-button-1");
   fireEvent.click(editButton);
 
-  // Edit the note's title
+  //edit the note's title
   const editTitleInput = screen.getByDisplayValue("Test Note");
   fireEvent.change(editTitleInput, { target: { value: "Updated Note Title" } });
 
-  // Save the edited note
+  //save the edited note
   const saveButton = screen.getByText("Save");
   fireEvent.click(saveButton);
 
-  // Check if the updated note's title is displayed
+  //check if the updated note's title is displayed
   const updatedNoteTitle = screen.getByText("Updated Note Title");
   expect(updatedNoteTitle).toBeInTheDocument();
 });
 
+//checks if notes gets deleted
 test("deletes a note", () => {
   render(<StickyNotes initialNotes={[]} />);
 
-  // Create a new note
+  //create a new note
   const createNoteTitleInput = screen.getByPlaceholderText("Note Title");
   const createNoteContentTextarea = screen.getByPlaceholderText("Note Content");
   const createNoteButton = screen.getByText("Create Note");
@@ -91,15 +93,16 @@ test("deletes a note", () => {
   fireEvent.change(createNoteContentTextarea, { target: { value: "Test Content" } });
   fireEvent.click(createNoteButton);
 
-  // Now the note should be created, and we can delete it
+  //deleting the note
   const deleteButton = screen.getByTestId("delete-button-1");
   fireEvent.click(deleteButton);
 
-  // Check if the note is no longer in the document
+  //check if the note is no longer in the document
   const deletedNote = screen.queryByTestId("note-item-1");
   expect(deletedNote).not.toBeInTheDocument();
 });
 
+  //test if app allows notes without a title or content
   test("prevents creating a note without a title or content", () => {
     render(<StickyNotes />);
   
@@ -107,7 +110,7 @@ test("deletes a note", () => {
     
     fireEvent.click(createNoteButton);
   
-    // Assert that note was not created
+    //see if note was not created
     expect(screen.queryByText("Note Title")).not.toBeInTheDocument();
   });
 });
